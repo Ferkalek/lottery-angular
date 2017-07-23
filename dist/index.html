@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html ng-app="lotteryApp">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lottery Angular</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+
+</head>
+<body  ng-controller="lotteryCtrl" ng-cloak="">
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 col-xs-12">
+            <div class="input-group input-group mb-20">
+                <span>Winners: {{winnerText}}</span>
+                <span class="input-group-btn">
+                      <button type="button" class="btn btn-primary btn-flat" ng-click="winner()">New winner</button>
+                </span>
+            </div>
+
+            <div class="panel panel-primary state-form-{{state}}">
+                <div class="panel-heading">
+                    <h4>{{state == 'save' ? 'Registration form' : 'Edit form'}}</h4>
+                </div>
+
+                <!-- Registration form -->
+                <form name="formRegistration" class="panel-body form-horizontal form-save" novalidate ng-submit="addNewPlayer()">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="inputName" class="col-sm-3 control-label">Name:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputName" ng-model="addName" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputSurname" class="col-sm-3 control-label">Surname:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputSurname" ng-model="addSurname" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail" class="col-sm-3 control-label">Email:</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="inputEmail" ng-model="addEmail" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPhone" class="col-sm-3 control-label">Phone:</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputPhone" ng-model="addPhone" ui-br-phone-number>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputBirthday" class="col-sm-3 control-label">Birthday:</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputBirthday" ng-model="addBirthday" ui-date-mask="DD-MM-YYYY" placeholder="dd-mm-yyyy">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="formRegistration.$invalid">Save</button>
+                    </div>
+                </form>
+
+
+                <!-- Edit form -->
+                <form name="formEdit" class="panel-body form-horizontal form-edit" novalidate ng-submit="saveEditedPlayer(eIndex, eName, eSurname, eEmail, ePhone, eBirthday)">
+                    <input type="hidden" ng-model="eIndex">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="inpName" class="col-sm-3 control-label">Name:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inpName" ng-model="eName" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inpSurname" class="col-sm-3 control-label">Surname:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inpSurname" ng-model="eSurname" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inpEmail" class="col-sm-3 control-label">Email:</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="inpEmail" ng-model="eEmail" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inpPhone" class="col-sm-3 control-label">Phone:</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inpPhone" ng-model="ePhone" ui-br-phone-number>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inpBirthday" class="col-sm-3 control-label">Birthday:</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inpBirthday" ng-model="eBirthday" ui-date-mask="DD-MM-YYYY" placeholder="dd-mm-yyyy">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="formEdit.$invalid">Save</button>
+                        <button type="button" class="btn btn-default pull-right mr-15" ng-click="changeState()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr role="row">
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Birthday</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tr ng-repeat="item in list.players">
+                        <td class="item-{{$index}}">{{item.name}}</td>
+                        <td>{{item.surname}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.phone | tel}}</td>
+                        <td>{{item.birthday | date: "dd.MM.yyyy"}}</td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-sm" ng-click="editPlayer($index);"><i
+                                        class="material-icons">edit</i></button>
+                                <button type="button" class="btn btn-danger  btn-sm" ng-click="deletePlayer($index);"><i
+                                        class="material-icons">delete</i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&subset=cyrillic');
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+html, body {
+  height: 100%;
+}
+body {
+  font-family: Roboto,Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 20px 0 50px;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng.ng-cloak {
+  display: none;
+}
+
+.material-icons {
+  font-size: 16px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+.mr-15 {
+  margin-right: 15px;
+}
+
+form {
+  display: none;
+}
+.state-form-save {
+  .form-save {
+    display: block;
+  }
+}
+.state-form-edit {
+  .form-edit {
+    display: block;
+  }
+}
+
+.ng-invalid.ng-not-empty, .ng-invalid-email {
+  border-color: red;
+}
+
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+  vertical-align: middle;
+}
